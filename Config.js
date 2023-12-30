@@ -9,9 +9,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/ecommerce')
 
 
 } catch (error) {
-  if (error instanceof ServerSelectionError) {
-    console.error('Caught a ServerSelectionError:', error.message);
-  } else {
+ 
     console.error('Caught a different error:', error);
   }
-}
+
