@@ -1,25 +1,14 @@
 const mongoose=require('mongoose')
 const productSchema=mongoose.Schema({
-    name:{
-type:String,
-default:"xyz"
-    },
-    price:{
-type:String,
-default:"10"
-    },
-    userid:{
-type:String,
-default:"12334"
-    },
-    company:{
-type:String,
-default:"abc"
-    },
-    
-category:{
-type:String,
-default:"abc"
-    },
+    name:String,
+    price:String,
+    category:String,
+    userid:String,
+    company:String,
+    image: {
+        data: Buffer,
+        contentType: String,
+        
+      }
 })
 module.exports=mongoose.model('products',productSchema)

@@ -2,7 +2,8 @@ const express = require("express");
 const cors = require("cors");
 require("./Config");
 const User = require("./User");
-const Product=require('./Product')
+const Product=require('./Product');
+const multer = require("multer");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -14,12 +15,9 @@ app.post("/", async (req, res) => {
   res.send(result);
   console.log(result);
 });
-
-
 app.post("/login", async (req, res) => {
   console.log(req.body);
-  if (req.body.password && req.body.email) 
-  {
+  if (req.body.password && req.body.email) {
     let user = await User.findOne(req.body);
     if (user) res.send(user);
     else res.send("no user found");
@@ -83,5 +81,19 @@ let data=await Product.find({
 })
 console.log(data)
 res.send(data)
+})
+const upload=multer({
+    storage:multer.diskStorage({
+        destination:function(req,file,cb)
+        {
+            cb(null,"Views")
+        },
+        filename:function(req,file,cb){
+            cb(null,file.fieldname+"-"+Date.now()+".jpeg")
+        }
+    })
+}).single("user_file")
+app.post('/upload',upload,(req,res)=>{
+    res.send("file upload")
 })
 app.listen(1200);
