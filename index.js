@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const path=require('path')
+require('dotenv').config()
 require("./Config");
 const User = require("./User");
 const Product=require('./Product');
@@ -15,6 +17,7 @@ app.post("/", async (req, res) => {
   res.send(result);
   console.log(result);
 });
+const port=process.env.PORT
 app.post("/login", async (req, res) => {
   console.log(req.body);
   if (req.body.password && req.body.email) {
@@ -33,12 +36,12 @@ app.post('/addproduct',async(req,res)=>{
 
 app.get('/products',async(req,res)=>{
   const a=req.params.id;
-  let products=await Product.find();
+  let products=await Product.find(a);
   if(products.length>0){
     res.send(products)
   }
   else{
-    res.send("product is empty");
+    res.send("product is empty")
   }
 })
 app.get('/products/:userid',async(req,res)=>{
@@ -94,6 +97,10 @@ const upload=multer({
     })
 }).single("user_file")
 app.post('/upload',upload,(req,res)=>{
-    res.send("file upload")
+    res.send("file upload");
 })
-app.listen(1200);
+app.get('/',(req,res)=>{
+  app.use(express.static(path.resolve(__dirname,"ecommerce_frontend","build")));
+  res.sendFile(path.resolve(__dirname,"ecommerce_frontend","build","index.html"))
+})
+app.listen(port);
